@@ -22,7 +22,12 @@ footer{text-align:center;color:#64748b;padding:24px;font-size:13px}
 <script>
 // The PDF file must be uploaded in the same repository folder as this index.html.
 // Rename your uploaded PDF to: pw-nsat-formula-book.pdf
-const docs=[{title:"PW NSAT Formula Book",category:"Study Material",description:"Formula book PDF",file:"pw-nsat-formula-book.pdf"}];
+const docs=[{title:"PW NSAT Formula Book",category:"Study Material",description:"Formula book PDF",file:"pw-nsat-formula-book.pdf"},{
+  title:"Narration",
+  category:"Study Material",
+  description:"English Grammer",
+  file:"Narration.pdf"
+}];
 let active="All";
 const search=document.getElementById("search"),filters=document.getElementById("filters"),list=document.getElementById("list");
 const cats=["All",...new Set(docs.map(x=>x.category))];
