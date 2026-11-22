@@ -29,7 +29,12 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:28px 12px}
 /* Add your PDFs inside a folder named "pdfs", then edit the list below.
    Example: file: "pdfs/history-notes.pdf" */
 const docs = [
-  {title:"Add your first PDF here",category:"Other",description:"Replace this sample card with your document's name and details.",file:"#"}
+  {
+    title: "PW NSAT Formula Book",
+    category: "Study Material",
+    description: "Formula book PDF",
+    file: "pw-nsat-formula-book.pdf"
+  }
 ];
 const categories=["All",...new Set(docs.map(d=>d.category))];
 let chosen="All";
