@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shivam Documents</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f4f7fb;color:#172033}
+header{background:#1762d1;color:#fff;text-align:center;padding:28px 16px}
+header h1{margin:0 0 8px;font-size:28px}header p{margin:0;font-size:15px;opacity:.95}
+main{max-width:850px;margin:auto;padding:18px}
+#search{width:100%;padding:14px;border:1px solid #d8e0ec;border-radius:12px;font-size:16px;margin-bottom:14px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.filters button{background:#fff;border:1px solid #d5deeb;border-radius:20px;padding:9px 14px;color:#24344d;cursor:pointer}
+.filters button.active{background:#1762d1;color:#fff;border-color:#1762d1}
+#count{font-size:14px;color:#667085;margin:8px 0}
+.card{background:#fff;border:1px solid #e4eaf2;border-radius:14px;padding:16px;margin:12px 0;box-shadow:0 3px 12px rgba(20,40,80,.04)}
+.tag{display:inline-block;background:#eaf2ff;color:#1762d1;padding:4px 9px;border-radius:20px;font-size:12px;margin-bottom:8px}
+.card h3{margin:0 0 7px}.card p{margin:0 0 14px;color:#667085}
+.actions{display:flex;gap:9px;flex-wrap:wrap}.actions a{padding:10px 14px;border-radius:9px;text-decoration:none;font-weight:600;font-size:14px}
+.read{background:#1762d1;color:#fff}.download{background:#edf1f6;color:#25344b}
+.video-wrap{margin-top:12px}.video-wrap video{width:100%;height:auto;max-height:70vh;border-radius:10px;background:#111}
+.empty{text-align:center;padding:25px;color:#667085}
+footer{text-align:center;padding:20px;color:#667085;font-size:13px}
+</style>
+</head>
+<body>
+<header><h1>📚 Shivam Documents</h1><p>Search, read, download and watch</p></header>
+<main>
+<input id="search" type="search" placeholder="Search PDF or video by name, subject or keyword…" aria-label="Search documents">
+<div class="filters" id="filters"></div>
+<div id="count"></div>
+<div id="list"></div>
+</main>
+<footer>Shivam Documents</footer>
+<script>
+const docs=[
+ {type:"pdf",title:"PW NSAT Formula Book",category:"Study Material",description:"Formula book PDF",keywords:"PW NSAT Formula Maths Math",file:"pw-nsat-formula-book.pdf"},
+ {type:"pdf",title:"Narration",category:"English Grammar",description:"Narration notes and practice PDF",keywords:"Narration Direct Indirect Speech English Grammar",file:"narration.pdf"},
+ {type:"video",title:"My Video",category:"Videos",description:"Uploaded MP4 video",keywords:"video mp4 clip",file:"1000039891.mp4"}
+];
+const search=document.getElementById('search'),filters=document.getElementById('filters'),list=document.getElementById('list'),count=document.getElementById('count');
+let active="All";
+function esc(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function render(){
+ let q=search.value.trim().toLowerCase();
+ let results=docs.filter(d=>(active==="All"||d.category===active)&&[d.title,d.category,d.description,d.keywords].join(" ").toLowerCase().includes(q));
+ count.textContent=results.length+" item"+(results.length===1?"":"s")+" found";
+ list.innerHTML=results.length?results.map(d=>d.type==="video"?`<div class="card"><span class="tag">${esc(d.category)}</span><h3>${esc(d.title)}</h3><p>${esc(d.description)}</p><div class="video-wrap"><video controls preload="metadata"><source src="${encodeURI(d.file)}" type="video/mp4">Your browser doesn't support video.</video></div><div class="actions" style="margin-top:12px"><a class="download" href="${encodeURI(d.file)}" download>Download Video</a></div></div>`:`<div class="card"><span class="tag">${esc(d.category)}</span><h3>${esc(d.title)}</h3><p>${esc(d.description)}</p><div class="actions"><a class="read" href="${encodeURI(d.file)}" target="_blank" rel="noopener">Read PDF</a><a class="download" href="${encodeURI(d.file)}" download>Download</a></div></div>`).join(""):'<div class="empty">No item found. Try another search.</div>';
+}
+function drawFilters(){
+ let cats=["All",...new Set(docs.map(d=>d.category))];
+ filters.innerHTML=cats.map(c=>`<button class="${c===active?"active":""}" data-category="${esc(c)}">${esc(c)}</button>`).join("");
+ filters.querySelectorAll("button").forEach(b=>b.onclick=()=>{active=b.dataset.category;drawFilters();render();});
+}
+search.addEventListener("input",render);drawFilters();render();
+</script>
+</body>
+</html>
