@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Shivam Documents</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#f4f7fb;color:#172033}header{background:#1762d1;color:white;text-align:center;padding:26px 14px}main{max-width:900px;margin:auto;padding:16px}input{width:100%;padding:13px;border:1px solid #ccd6e5;border-radius:10px;font-size:16px}.filters{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.filters button{padding:8px 13px;border:1px solid #ccd6e5;border-radius:20px;background:white}.filters button.active{background:#1762d1;color:white}article{background:white;border:1px solid #e3e8f0;border-radius:13px;padding:15px;margin:12px 0}.tag{font-size:12px;background:#eaf2ff;color:#1762d1;padding:4px 8px;border-radius:15px}h3{margin:10px 0 6px}p{color:#667085}.preview{width:100%;height:auto;max-height:80vh;object-fit:contain;margin:10px 0;border-radius:8px;background:#eee}.actions{display:flex;gap:8px;flex-wrap:wrap}.actions a{padding:9px 13px;border-radius:8px;text-decoration:none}.read{background:#1762d1;color:white}.download{background:#edf1f6;color:#23344c}footer{text-align:center;padding:20px;color:#667085}
+</style></head>
+<body><header><h1>📚 Shivam Documents</h1><p>Search and view study resources</p></header><main>
+<input id="search" placeholder="Search PDF or picture…">
+<div id="filters" class="filters"></div><p id="count"></p><div id="list"></div></main><footer>Shivam Documents</footer>
+<script>
+const docs=[
+{type:"pdf",title:"PW NSAT Formula Book",category:"Study Material",description:"Formula book PDF",keywords:"PW NSAT Formula Maths",file:"pw-nsat-formula-book.pdf"},
+{type:"pdf",title:"Narration",category:"English Grammar",description:"Narration notes PDF",keywords:"Narration Direct Indirect Speech English",file:"narration.pdf"},
+{type:"image",title:"Crop Production and Management — Chapter 1",category:"Class 8 Science",description:"Crop production study infographic",keywords:"crop production agriculture sowing manure irrigation harvesting storage",file:"images/crop-production.png"},
+{type:"image",title:"Combustion and Flame — Chapter 4",category:"Class 8 Science",description:"Combustion and flame study infographic",keywords:"combustion flame fuel ignition calorific value",file:"images/combustion-flame.png"}];
+const s=document.querySelector('#search'),f=document.querySelector('#filters'),l=document.querySelector('#list'),c=document.querySelector('#count');let active='All';
+function esc(x){return String(x||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function render(){let q=s.value.toLowerCase().trim(),a=docs.filter(d=>(active==='All'||d.category===active)&&[d.title,d.category,d.description,d.keywords].join(' ').toLowerCase().includes(q));c.textContent=a.length+' items found';l.innerHTML=a.map(d=>d.type==='image'?`<article><span class="tag">${esc(d.category)}</span><h3>${esc(d.title)}</h3><p>${esc(d.description)}</p><a href="${d.file}" target="_blank"><img class="preview" src="${d.file}" alt="${esc(d.title)}"></a><div class="actions"><a class="read" href="${d.file}" target="_blank">View full image</a><a class="download" href="${d.file}" download>Download image</a></div></article>`:`<article><span class="tag">${esc(d.category)}</span><h3>${esc(d.title)}</h3><p>${esc(d.description)}</p><div class="actions"><a class="read" href="${d.file}" target="_blank">Read PDF</a><a class="download" href="${d.file}" download>Download</a></div></article>`).join('')||'<article>No matching item.</article>'}
+function filters(){let cats=['All',...new Set(docs.map(d=>d.category))];f.innerHTML=cats.map(x=>`<button class="${x===active?'active':''}">${esc(x)}</button>`).join('');f.querySelectorAll('button').forEach(b=>b.onclick=()=>{active=b.textContent;filters();render()})}
+s.oninput=render;filters();render();
+</script></body></html>
